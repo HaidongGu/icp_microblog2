@@ -35,6 +35,11 @@ dfx stop
 
 ```
 
+```
+dfx canister --network=ic stop --all
+dfx canister --network=ic delete --all
+```
+
 ## Running the project locally
 
 If you want to test your project locally, you can use the following commands:
