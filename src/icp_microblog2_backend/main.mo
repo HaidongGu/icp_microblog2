@@ -9,7 +9,7 @@ actor {
   };
 
   public type Message = {
-    message : Text;
+    text : Text;
     time: Time.Time; // as suggested by https://forum.dfinity.org/t/how-to-convert-time-now-to-yyyy-mm-dd-in-motoko/10407, we don't parse Time value
     author : ?Text;
   };
@@ -52,10 +52,15 @@ actor {
       pid = id;
       name = n;
     };
+    //TODO not push if already followed
     followed := List.push(follow, followed);
   };
 
   public shared func follow2 (id: Text): async () {
+
+    //TODO can change to call follow to reduce the code duplication
+    //let pid : Principal = Principal.fromText(id);
+    //follow(pid);
 
     let canister : Microblog = actor(id);
     let n : ?Text = await canister.get_name();
@@ -71,10 +76,10 @@ actor {
     List.toArray(followed);
   };
 
-  public shared func post (otp: Text, text: Text): async() {
+  public shared func post (otp: Text, t: Text): async() {
     assert(otp == "11234");
     let post: Message = {
-        message = text;
+        text = t;
         time = Time.now();
         author = name;
     };

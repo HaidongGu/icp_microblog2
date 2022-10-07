@@ -54,7 +54,7 @@ async function load_posts() {
   for (var i=0; i<posts.length; i++) {
     var r = posts_table.insertRow(0); 
     var c = r.insertCell(0);
-    c.innerHTML = posts[i].message ;
+    c.innerHTML = posts[i].text ;
     c = r.insertCell(1);
     c.innerHTML = posts[i].time ;
     c = r.insertCell(2);
@@ -105,6 +105,7 @@ async function load_follows() {
 
 var num_timeline = 0;
 async function load_timeline() {
+  try {
   let timeline = await icp_microblog2_backend.timeline(0);
 
   console.log("timeline.length =" + timeline.length);
@@ -119,7 +120,7 @@ async function load_timeline() {
   for (var i=0; i<timeline.length; i++) {
     var r = timeline_table.insertRow(0); 
     var c = r.insertCell(0);
-    c.innerHTML = timeline[i].message ;
+    c.innerHTML = timeline[i].text ;
     c = r.insertCell(1);
     c.innerHTML = timeline[i].time ;
     c = r.insertCell(2);
@@ -134,6 +135,10 @@ async function load_timeline() {
   headerC = headeR.insertCell(2);
   headerC.innerHTML = "##Author";
   timeline_section.appendChild(timeline_table);
+  } catch (err) {
+    console.log("timeline error");
+    console.log(err);
+  }
 }
 
 function load() {
