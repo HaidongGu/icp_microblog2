@@ -21,6 +21,7 @@ actor {
 
   public type Microblog = actor {
     follow: shared (Principal) -> async ();
+    follow2: shared (Text) -> async ();
     follows: shared query() -> async [Follow];
     post: shared (Text, Text) -> async ();
     posts: shared query (Time.Time) -> async [Message];
@@ -31,7 +32,7 @@ actor {
 
   stable var followed: List.List<Follow> = List.nil();
   stable var messages: List.List<Message> = List.nil();
-    stable var name: ?Text = ?"Student #47" ;
+  stable var name: ?Text = ?"Student #47" ;
 
 
   public shared func set_name(opt : Text, text: ?Text) {
@@ -49,6 +50,18 @@ actor {
 
     let follow: Follow = {
       pid = id;
+      name = n;
+    };
+    followed := List.push(follow, followed);
+  };
+
+  public shared func follow2 (id: Text): async () {
+
+    let canister : Microblog = actor(id);
+    let n : ?Text = await canister.get_name();
+
+    let follow: Follow = {
+      pid = Principal.fromText(id);
       name = n;
     };
     followed := List.push(follow, followed);

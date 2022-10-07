@@ -11,16 +11,32 @@ async function post() {
   let otp = document.getElementById("otp").value;
   try {
     await icp_microblog2_backend.post(otp, text);
-    error.innerText = "Post is successful!"
-    textarea.value = ""
+    error.innerText = "Post is successful!";
+    textarea.value = "";
   } catch (err) {
     console.log(err);
-    error.innerText = "Post Failed! <br> " + err;
+    error.innerText = "Post Failed! \n " + err;
   }
   
   post_button.disabled = false;
 }
 
+async function follow() {
+  let follow_button = document.getElementById("follow");
+  let error = document.getElementById("error2");
+  follow_button.disabled = true;
+  error.innerText = "";
+  let followid = document.getElementById("followId").value;
+  try {
+    await icp_microblog2_backend.follow2(followid );
+    error.innerText = "Follow is successful!";
+    document.getElementById("followId").value = "";
+  } catch (err) {
+    console.log(err);
+    error.innerText = "Follow Failed! \n " + err;
+  }
+  follow_button.disabled = false;
+}
 
 var num_posts = 0;
 
@@ -123,6 +139,8 @@ async function load_timeline() {
 function load() {
   let post_button = document.getElementById("post");
   post_button.onclick = post;
+  let follow_button = document.getElementById("follow");
+  follow_button.onclick = follow;
 
   load_follows();
   load_timeline();  
